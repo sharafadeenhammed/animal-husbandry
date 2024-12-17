@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
-import * as THREE from "three";
-import { div } from "three/tsl";
+import { useEffect, useState } from "react";
 import calculateRotation from "../helpers/orientation";
-import { FaCow } from "react-icons/fa6";
 
 type CattelOrientationType = {
   x: number;
   y: number;
   z: number;
 };
-
-const height = 300;
-const width = 300;
 
 // component
 
