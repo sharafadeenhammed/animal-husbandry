@@ -5,7 +5,6 @@ import { FaHeart, FaWind } from "react-icons/fa";
 import Card from "./component/Card";
 import { FaCloudShowersWater, FaCow, FaTemperatureHalf } from "react-icons/fa6";
 import relativeTime from "dayjs/plugin/relativeTime";
-import * as THREE from "three";
 import CattelOrientation from "./component/CattelOrientation";
 type feedDataType = {
   created_at: string;
@@ -48,9 +47,6 @@ const formatToReadingsData = (data: feedDataType): typeof initialState => {
 };
 dayjs.extend(relativeTime);
 const READ_API_KEY = "CLC2P68LXMZ7KDN4";
-
-const height = 300;
-const width = 400;
 
 // app component..
 function App() {
