@@ -6,30 +6,10 @@ import Card from "./component/Card";
 import { FaCloudShowersWater, FaCow, FaTemperatureHalf } from "react-icons/fa6";
 import relativeTime from "dayjs/plugin/relativeTime";
 import CattelOrientation from "./component/CattelOrientation";
-type feedDataType = {
-  created_at: string;
-  entry_id: number;
-  field1: string;
-  field2: string;
-  field3: string;
-  field4: string;
-  field5: string;
-  field6: string;
-  field7: string;
-  field8: string;
-};
-const initialState = {
-  createdAt: "",
-  entryId: 0,
-  ambientTemperature: 0.0,
-  humidity: 0.0,
-  heartRate: 0.0,
-  bodyTemperature: 0.0,
-  airAuality: 0.0,
-  zAxis: 0.0,
-  xAxis: 0.0,
-  yAxis: 0.0,
-};
+import { EvaluateDiseaseType, feedDataType } from "./type";
+import { initialState } from "./constants/initials";
+import * as analize from "./helpers/readingAnalyzer";
+import EvaluateDisease from "./helpers/analizeDiseases";
 
 const formatToReadingsData = (data: feedDataType): typeof initialState => {
   return {
@@ -51,6 +31,7 @@ const READ_API_KEY = "CLC2P68LXMZ7KDN4";
 // app component..
 function App() {
   const [readingsData, setReadingsData] = useState(initialState);
+  const [diseases, setDiseases] = useState<EvaluateDiseaseType[]>([]);
   const fetchReadings = async () => {
     try {
       const response = await axios.get(
@@ -58,6 +39,7 @@ function App() {
       );
       const latestReading: feedDataType = response.data.feeds[0];
       setReadingsData(formatToReadingsData(latestReading));
+      setDiseases(EvaluateDisease(formatToReadingsData(latestReading)));
     } catch (error) {
       console.log("error fetching readings: ", error);
     }
@@ -67,6 +49,7 @@ function App() {
     return () => clearInterval(timer);
     // fetchReadings();
   }, []);
+
   return (
     <div>
       <div className='bg-white/[0.95] flex items-center justify-between sticky top-0 left-0 py-5 px-2'>
@@ -85,6 +68,7 @@ function App() {
           </p>
         </div>
       </div>
+
       <div className='px-4 min-h-screen flex flex-wrap bg-slate-200 py-5'>
         {/* heart rate */}
         <Card
@@ -93,8 +77,8 @@ function App() {
           color='#FFFFFF'
           unit='b/min'
           value={readingsData.heartRate}
-          status='NORMAL'
-          tagline='Heart Rate Reading.'
+          status={analize.heartRate(readingsData).status}
+          tagline={analize.heartRate(readingsData).text}
           header='Heart Rate'
         />
         {/* humidity */}
@@ -104,8 +88,8 @@ function App() {
           color='#FFFFFF'
           unit='%'
           value={readingsData.humidity}
-          status='NORMAL'
-          tagline='Humidity Reading.'
+          status={analize.humidity(readingsData).status}
+          tagline={analize.humidity(readingsData).text}
           header='Humidity'
         />
         {/* ambient temperature */}
@@ -115,8 +99,8 @@ function App() {
           color='#FFFFFF'
           unit='°C'
           value={readingsData.ambientTemperature}
-          status='NORMAL'
-          tagline='Ambient Temperature Reading.'
+          status={analize.ambientTemperature(readingsData).status}
+          tagline={analize.ambientTemperature(readingsData).text}
           header='Ambient Temperature'
         />
         {/* ambient temperature */}
@@ -126,8 +110,8 @@ function App() {
           color='#FFFFFF'
           unit='%'
           value={readingsData.airAuality}
-          status='NORMAL'
-          tagline='Air Quality Reading.'
+          status={analize.airQuality(readingsData).status}
+          tagline={analize.airQuality(readingsData).text}
           header='Air Quality'
         />
         {/* body temperature */}
@@ -137,8 +121,8 @@ function App() {
           color='#FFFFFF'
           unit='°C'
           value={readingsData.bodyTemperature}
-          status='NORMAL'
-          tagline='Body Temperature Reading.'
+          status={analize.bodyTemperature(readingsData).status}
+          tagline={analize.bodyTemperature(readingsData).text}
           header='Body Temperature'
         />
       </div>
@@ -150,6 +134,24 @@ function App() {
           y={readingsData.yAxis}
           z={readingsData.zAxis}
         />
+      </div>
+
+      <div>
+        {diseases
+          .filter((item) => item.diseaseDetected)
+          .map((item, index) => {
+            return (
+              <>
+                {index === 0 ? (
+                  <h2 className='mt-5 mb-7'>Diseases Detected</h2>
+                ) : null}
+                <div className='mb-3' key={index.toString()}>
+                  <h3> {item.name}</h3>
+                  <p> {item.text}</p>
+                </div>
+              </>
+            );
+          })}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { JSXElementConstructor } from "react";
+import { status } from "../type";
 interface CardInterface {
   header: string;
   tagline: string;
@@ -6,7 +7,7 @@ interface CardInterface {
   color: string;
   value: string | number;
   unit: string;
-  status: "NORMAL" | "WARNING" | "ABNORMAL";
+  status: status;
   Icon: JSXElementConstructor<{
     size: number;
     color: string;
@@ -24,10 +25,11 @@ function Card({
   status,
   Icon = () => null,
 }: CardInterface) {
-  let backgroundColor = "";
+  let backgroundColor = "bg-green-700";
   if (status === "NORMAL") backgroundColor = "bg-green-700";
-  if (status === "WARNING" && value !== 0) backgroundColor = "bg-yellow-600";
-  if (status === "ABNORMAL" && value !== 0) backgroundColor = "bg-red-800";
+  if (status === "LOW" && value !== 0) backgroundColor = "bg-yellow-600";
+  if ((status === "HIGH" || status === "ABNORMAL") && value !== 0)
+    backgroundColor = "bg-red-800";
   return (
     <div
       className={` mx-2 my-4 font-extrabold px-3 py-4 h-fit rounded-lg ${backgroundColor} box-border overflow-hidden md:w-[300px] w-full `}
