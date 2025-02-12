@@ -52,8 +52,8 @@ function App() {
 
   return (
     <div>
-      <div className='sticky top-0 left-0 py-5 px-2'>
-        <div className='bg-white/[0.95] flex items-center justify-between'>
+      <div className='sticky top-0 left-0 py-5 px-2 bg-white/[0.95] '>
+        <div className='flex items-center justify-between'>
           <h3 className='text-left text-sm font-bold '>
             Cattle Health Monitoring System
           </h3>
