@@ -52,21 +52,29 @@ function App() {
 
   return (
     <div>
-      <div className='bg-white/[0.95] flex items-center justify-between sticky top-0 left-0 py-5 px-2'>
-        <h3 className='text-left text-sm font-bold '>
-          Cattle Health Monitoring System
-        </h3>
-        <div className='flex items-center justify-end'>
-          <p className='mx-2 text-[12px]'>
-            <span className='font-bold'>Entries: </span> {readingsData.entryId}
-          </p>
-          <p className='mx-2 text-[12px]'>
-            <span className='font-bold'> Last Entry Recorded:</span>
-            {readingsData.createdAt !== ""
-              ? dayjs(readingsData.createdAt).fromNow()
-              : " --:--"}
-          </p>
+      <div className='sticky top-0 left-0 py-5 px-2'>
+        <div className='bg-white/[0.95] flex items-center justify-between'>
+          <h3 className='text-left text-sm font-bold '>
+            Cattle Health Monitoring System
+          </h3>
+          <div className='flex items-center justify-end'>
+            <p className='mx-2 text-[12px]'>
+              <span className='font-bold'>Entries: </span>{" "}
+              {readingsData.entryId}
+            </p>
+            <p className='mx-2 text-[12px]'>
+              <span className='font-bold'> Last Entry Recorded:</span>
+              {readingsData.createdAt !== ""
+                ? dayjs(readingsData.createdAt).fromNow()
+                : " --:--"}
+            </p>
+          </div>
         </div>
+        {diseases.map((disease) => disease.diseaseDetected).includes(true) ? (
+          <p className='px-3 mt-2 text-red-700 text-center'>
+            Someting is not right please check cattle health immediately
+          </p>
+        ) : null}
       </div>
 
       <div className='px-4 min-h-screen flex flex-wrap bg-slate-200 py-5'>
