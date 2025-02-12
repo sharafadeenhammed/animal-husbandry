@@ -3,7 +3,12 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { FaHeart, FaWind } from "react-icons/fa";
 import Card from "./component/Card";
-import { FaCloudShowersWater, FaCow, FaTemperatureHalf } from "react-icons/fa6";
+import {
+  FaCloudShowersWater,
+  FaCow,
+  FaTemperatureHalf,
+  FaBriefcaseMedical,
+} from "react-icons/fa6";
 import relativeTime from "dayjs/plugin/relativeTime";
 import CattelOrientation from "./component/CattelOrientation";
 import { EvaluateDiseaseType, feedDataType } from "./type";
@@ -70,11 +75,11 @@ function App() {
             </p>
           </div>
         </div>
-        {diseases.map((disease) => disease.diseaseDetected).includes(true) ? (
+        {/* {diseases.map((disease) => disease.diseaseDetected).includes(true) ? (
           <p className='px-3 mt-2 text-red-700 text-center'>
             Someting is not right please check cattle health immediately
           </p>
-        ) : null}
+        ) : null} */}
       </div>
 
       <div className='px-4 min-h-screen flex flex-wrap bg-slate-200 py-5'>
@@ -133,6 +138,40 @@ function App() {
           tagline={analize.bodyTemperature(readingsData).text}
           header='Body Temperature'
         />
+
+        {/* overall heallth status */}
+        <div
+          className={` mx-2 my-4 font-extrabold px-3 py-4 h-fit rounded-lg ${
+            diseases.map((disease) => disease.diseaseDetected).includes(true)
+              ? "bg-red-800"
+              : "bg-green-700"
+          } box-border overflow-hidden md:w-[300px] w-full `}
+        >
+          <div className='flex justify-between items-start'>
+            <h3 className='mb-2 font-medium text-[10px] text-sm text-white '>
+              Overall health status
+            </h3>
+          </div>
+          <div className='flex items-center justify-start '>
+            <FaBriefcaseMedical
+              className='mb-3 mr-4 mt-2'
+              color={"white"}
+              size={30}
+            />
+            {/* <p className='text-2xl font-thin text-white'>
+          {value} {unit}
+        </p> */}
+          </div>
+          <p className='text-white text-sm'>
+            {diseases.map((disease) => disease.diseaseDetected).includes(true)
+              ? "Possible health issues " +
+                diseases
+                  .filter((disease) => disease.diseaseDetected)
+                  .map((item) => item.name)
+                  .join(" ,")
+              : "No Disesase of illeness detected cattle health okay"}
+          </p>
+        </div>
       </div>
 
       {/* cattle orrientation */}
