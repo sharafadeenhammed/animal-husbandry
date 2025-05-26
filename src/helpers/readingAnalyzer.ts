@@ -75,14 +75,14 @@ export const bodyTemperature = (data: ReadingDataType): ReadingEvalutedType => {
 export const ambientTemperature = (data: ReadingDataType): ReadingEvalutedType => {
 
   // normal range 
-  if (data.ambientTemperature >= 10.0 && data.ambientTemperature <= 30.0)
+  if (data.ambientTemperature >= 10.0 && data.ambientTemperature <= 40.0)
     return {
       status: "NORMAL",
       text: "Ambient temperature at normal level"
     }
 
   // high range
-  if (data.ambientTemperature > 30)
+  if (data.ambientTemperature > 40)
     return {
       status: "HIGH",
       text: "Ambient temperature too high, cattle may be experiencing heat stress"
